@@ -69,13 +69,23 @@ On an NVIDIA card the package is `desilofhe-cu130` and the image is
 `fherma/desilo:1.17.0-cu130`; nothing else changes, and `"mode": "gpu"` in
 `config.jsonc` is what moves the work to the device.
 
+## Two measurements of the same solution
+
+`solution/` and `solution-all-cores/` hold the same four functions and differ
+in one line of configuration: `thread_count` is 1 in the first and 0 — the
+whole machine — in the second. Both are measured, because both answer a
+question worth asking. One core is what a published benchmark usually quotes
+and what makes two libraries comparable when only one of them has a thread
+setting; the whole machine is what the work actually costs when nothing is
+held back.
+
 ## Configuration
 
 | Key | Here | Why |
 |---|---|---|
 | `scheme` | `gl` | the matrix scheme, not RNS-CKKS |
 | `mode` | `cpu` | `gpu` with the CUDA image |
-| `thread_count` | `1` | so a number means one core; `0` takes the machine |
+| `thread_count` | `1` here, `0` in `solution-all-cores/` | so a number means one core, or the whole machine |
 | `keys` | `["matrix_multiplication"]` | the only key this solution uses; every other costs generation time and memory |
 | `shape` | `null` | taken from the point, so the matrix size is stated in one place |
 
