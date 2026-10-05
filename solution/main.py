@@ -1,4 +1,4 @@
-"""GENERATED for matmul/batched@1.0.0. Do not edit — `--update` rewrites it.
+"""GENERATED for matmul/secret-matrix-batches@1.0.0. Do not edit — `--update` rewrites it.
 
     ./solution <point directory>
 

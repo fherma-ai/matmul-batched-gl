@@ -1,4 +1,4 @@
-"""GENERATED for matmul/batched@1.0.0. Do not edit — `--update` rewrites it.
+"""GENERATED for matmul/secret-matrix-batches@1.0.0. Do not edit — `--update` rewrites it.
 
 The cryptographic envelope: engine, keys, encryption, decryption. This is the
 only place a secret key exists. The measured call never enters this file.

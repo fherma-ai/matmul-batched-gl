@@ -1,4 +1,4 @@
-"""GENERATED from matmul/batched@1.0.0. Do not edit.
+"""GENERATED from matmul/secret-matrix-batches@1.0.0. Do not edit.
 
 Types derived from the signature. Write the bodies in generate.py and oracle.py;
 serialising is the runner's job, so nothing here opens a file.
@@ -8,7 +8,7 @@ import hashlib
 import os
 import struct
 
-SPEC = "matmul/batched@1.0.0"
+SPEC = "matmul/secret-matrix-batches@1.0.0"
 
 #: Bits on the wire, by element type.
 WIDTHS = {"i8": 8, "i16": 16, "i32": 32, "i64": 64, "u8": 8, "u16": 16, "u32": 32, "u64": 64, "f32": 32, "f64": 64}

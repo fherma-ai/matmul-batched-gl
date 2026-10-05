@@ -1,6 +1,6 @@
 # Batched matrix multiplication over GL — DESILO FHE
 
-> Implements [`matrix-multiplication` / `batched@1.0.0`](https://www.fherma.io/kernels/matrix-multiplication/specifications/batched)
+> Implements [`matrix-multiplication` / `secret-matrix-batches@1.0.0`](https://www.fherma.io/kernels/matrix-multiplication/specifications/secret-matrix-batches)
 > on the FHERMA kernel catalogue.
 >
 > Uses the [DESILO FHE library](https://fhe.desilo.dev/), free for

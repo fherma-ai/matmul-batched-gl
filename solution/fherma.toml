@@ -1,5 +1,5 @@
 kind = "solution"
-spec = "matmul/batched@1.0.0"
+spec = "matmul/secret-matrix-batches@1.0.0"
 
 # Where the three functions are. The platform generated the loop that starts
 # the process, so the command is a property of the language, not a declaration.
