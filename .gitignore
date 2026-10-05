@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+out/
+cases/
+expected/
+# the library is fetched by the build, into the solution directory
+solution/desilofhe*
+solution/numpy*
+solution/bin/

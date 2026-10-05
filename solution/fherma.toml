@@ -1,0 +1,20 @@
+kind = "solution"
+spec = "matmul/batched@1.0.0"
+
+# Where the three functions are. The platform generated the loop that starts
+# the process, so the command is a property of the language, not a declaration.
+[entry]
+init = "solve:init"
+run  = "solve:run"
+free = "solve:free"
+
+# The library is not in the image: it is fetched from PyPI at build time, into
+# the solution directory, where the measured container finds it without a
+# network of its own. The licence permits installing it; it does not permit us
+# to redistribute it, and this way we never do.
+[build]
+command = "pip install --no-cache-dir --target . desilofhe==1.17.0"
+
+[runtime]
+language = "python"
+run = "python main.py"
