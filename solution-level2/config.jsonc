@@ -1,0 +1,76 @@
+// The envelope builds everything from this file: engine, keys, encryption.
+// It is read once per point, before anything is measured. `//` starts a
+// comment. Parameters marked for another scheme are ignored.
+{
+  // Encryption scheme: "ckks" | "gl".
+  //   ckks — approximate arithmetic over vectors of real numbers.
+  //   gl   — arithmetic over batched square matrices, with a matrix product
+  //          as one operation rather than a circuit of rotations.
+  // Your encoding/run/decoding must match what is named here.
+  "scheme": "gl",
+
+  // ── both schemes ─────────────────────────────────────────────────────────
+
+  // Where the engine computes: "cpu" | "gpu". A GPU engine needs an image
+  // built from a CUDA wheel and a machine with a card; the specification's
+  // environment requirements are what get you one.
+  "mode": "cpu",
+
+  // Threads the engine may use. 0 leaves the choice to the library, which
+  // takes the machine. Pin it when the measurement is about one core.
+  "thread_count": 1,
+
+  // Which card, when mode is "gpu".
+  "device_id": 0,
+
+  // The level fresh ciphertexts are encrypted at. Two, because the CKKS
+  // solution this is measured beside is built at multiplicative depth 2 and
+  // a comparison of times is a comparison of equal promises. A matrix
+  // product spends one level, so two is one to spend and one left.
+  //
+  // The top of the ladder is a different measurement, not a better one: it
+  // is what the same work costs a ciphertext that has its whole budget, and
+  // `solution/` is measured there.
+  "encrypt_level": 2,
+
+  // Public evaluation keys the envelope generates and hands to run(). Every
+  // key costs generation time and memory, so the list is what the answer
+  // actually calls, not everything the library offers.
+  //   ckks: "relinearization" | "rotation" | "conjugation" | "bootstrap"
+  //   gl:   "matrix_multiplication" | "rotation" | "transposition"
+  //         | "conjugate_transposition" | "hadamard_multiplication"
+  //         | "conjugation"
+  "keys": ["matrix_multiplication"],
+
+  // ── ckks only ────────────────────────────────────────────────────────────
+
+  // How the engine is sized. Give one of these groups and leave the rest null.
+  //   levels  — "max_level", and "slot_count" if the default does not suit;
+  //   ring    — "log_coeff_count" and "special_prime_count", with
+  //             "log_slot_count" when fewer slots than the ring are wanted;
+  //   plain   — none of them, and the library picks a default sized for
+  //             bootstrapping if "use_bootstrap" is true.
+  "max_level": null,
+  "slot_count": null,
+  "log_coeff_count": null,
+  "special_prime_count": null,
+  "log_slot_count": null,
+
+  // Bootstrapping refreshes spent levels. It enlarges the context and the
+  // keys, so it is off unless run() calls it.
+  "use_bootstrap": false,
+
+  // One fixed-rotation key per delta here, for rotations by a constant.
+  "fixed_rotation_deltas": [],
+
+  // ── gl only ──────────────────────────────────────────────────────────────
+
+  // The engine's tensor: [batch, rows, columns]. null derives it from the
+  // point, which is the usual case — a specification whose point says the
+  // matrix size needs no second place to say it.
+  //
+  // The library supports [256, 16, 16], [256, 32, 32] and [256, 64, 64] and
+  // nothing else: the batch of 256 is the scheme's, not a setting. An answer
+  // to a specification that measures one pair at a time has no GL form.
+  "shape": null
+}

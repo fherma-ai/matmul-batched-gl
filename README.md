@@ -69,15 +69,27 @@ On an NVIDIA card the package is `desilofhe-cu130` and the image is
 `fherma/desilo:1.17.0-cu130`; nothing else changes, and `"mode": "gpu"` in
 `config.jsonc` is what moves the work to the device.
 
-## Two measurements of the same solution
+## Three measurements of the same solution
 
-`solution/` and `solution-all-cores/` hold the same four functions and differ
-in one line of configuration: `thread_count` is 1 in the first and 0 — the
-whole machine — in the second. Both are measured, because both answer a
-question worth asking. One core is what a published benchmark usually quotes
-and what makes two libraries comparable when only one of them has a thread
-setting; the whole machine is what the work actually costs when nothing is
-held back.
+Every directory here holds the same four functions. They differ in one line of
+configuration each, because the same work has more than one honest price.
+
+| Directory | Differs by | What it measures |
+|---|---|---|
+| `solution/` | `encrypt_level: null` | a ciphertext with its whole budget — the top of the ladder |
+| `solution-level2/` | `encrypt_level: 2` | a ciphertext with two levels, which is the depth the CKKS solution beside it is built at |
+| `solution-all-cores/` | `thread_count: 0` | the library left to take the machine |
+
+The level matters: a matrix product spends one level, and starting at the top
+of the ladder costs several times what starting at two does, for the same
+result to the same precision. A comparison of times between libraries is only
+a comparison if both start with the same budget to spend, so
+`solution-level2/` is the one that stands beside a CKKS solution built at
+multiplicative depth 2.
+
+The thread count turned out not to matter: measured at 1, 0, 4 and 8 threads,
+`matrix_multiply` takes the same time. `solution-all-cores/` is kept because
+that is worth knowing and worth being able to check, not because it is faster.
 
 ## Configuration
 
@@ -85,8 +97,9 @@ held back.
 |---|---|---|
 | `scheme` | `gl` | the matrix scheme, not RNS-CKKS |
 | `mode` | `cpu` | `gpu` with the CUDA image |
-| `thread_count` | `1` here, `0` in `solution-all-cores/` | so a number means one core, or the whole machine |
+| `thread_count` | `1`, and `0` in `solution-all-cores/` | measured: it makes no difference to this operation |
 | `keys` | `["matrix_multiplication"]` | the only key this solution uses; every other costs generation time and memory |
+| `encrypt_level` | `null`, and `2` in `solution-level2/` | the budget a fresh ciphertext starts with |
 | `shape` | `null` | taken from the point, so the matrix size is stated in one place |
 
 ## Running it yourself
