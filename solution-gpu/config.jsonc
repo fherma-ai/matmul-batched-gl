@@ -17,9 +17,10 @@
   // engine's business and not the solution's.
   "mode": "gpu",
 
-  // Threads the engine may use. 0 leaves the choice to the library, which
-  // takes the machine. Pin it when the measurement is about one core.
-  "thread_count": 1,
+  // Left to the library. On the CPU variants this is pinned to one, so a
+  // number means one core; here it would only throttle the host side that
+  // feeds the card, which is not what the measurement is about.
+  "thread_count": 0,
 
   // Which card, when mode is "gpu".
   "device_id": 0,
