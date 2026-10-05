@@ -53,6 +53,12 @@ Only `solve.py` and `config.jsonc` are written by hand. The rest is emitted by
 `fherma-lang` from the specification's signature and replaced at every
 measurement, so a solution cannot drift from the contract it claims to meet.
 
+The GPU variant changes one word. The four functions are the same ones the CPU
+variants run: where the engine computes is the engine's business, and the
+solution never learns which machine it landed on. What differs is outside the
+code — the image is built from the CUDA wheel, and the implementation asks the
+platform for a machine with a card.
+
 ## The library, and why it is not here
 
 ```toml
@@ -79,6 +85,7 @@ configuration each, because the same work has more than one honest price.
 | `solution/` | `encrypt_level: null` | a ciphertext with its whole budget — the top of the ladder |
 | `solution-level2/` | `encrypt_level: 2` | a ciphertext with two levels, which is the depth the CKKS solution beside it is built at |
 | `solution-all-cores/` | `thread_count: 0` | the library left to take the machine |
+| `solution-gpu/` | `mode: "gpu"` | the same work on an NVIDIA card, from level 2 |
 
 The level matters: a matrix product spends one level, and starting at the top
 of the ladder costs several times what starting at two does, for the same
