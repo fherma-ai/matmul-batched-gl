@@ -1,6 +1,6 @@
 # Batched matrix multiplication over GL — DESILO FHE
 
-> Answers [`matrix-multiplication` / `batched@1.0.0`](https://www.fherma.io/kernels/matrix-multiplication/specifications/batched)
+> Implements [`matrix-multiplication` / `batched@1.0.0`](https://www.fherma.io/kernels/matrix-multiplication/specifications/batched)
 > on the FHERMA kernel catalogue.
 >
 > Uses the [DESILO FHE library](https://fhe.desilo.dev/), free for
@@ -17,7 +17,7 @@ kernel matmul<P: u32, N: u32>(
 ) -> %c: secret<tensor<P x N x N x f64>>
 ```
 
-## What the answer is
+## What it computes
 
 Three lines, and no loop:
 
@@ -31,17 +31,17 @@ product is one operation rather than a circuit of rotations and masks. There
 is nothing to pack and nothing to fold: the engine's tensor *is* the layout,
 so `encoding` reshapes the case into it and `decoding` reshapes it back.
 
-That is also why this answers the batched specification and not the
+That is also why this implements the batched specification and not the
 single-pair one beside it. The library offers three engine shapes —
 `(256, 16, 16)`, `(256, 32, 32)`, `(256, 64, 64)` — and the batch of 256 is
-the scheme's, not a setting. "Multiply one pair" is not a question this scheme
-can be asked.
+the scheme's, not a setting. "Multiply one pair" is not an operation this scheme
+has.
 
 ## Layout
 
 ```
 solution/
-  solve.py       the answer: four functions, this is the whole of it
+  solve.py       the solution: four functions, this is the whole of it
   config.jsonc   engine, threads, which keys to generate
   fherma.toml    how it is built and started
   envelope.py    generated — context, keys, encryption. Holds the secret key
@@ -51,7 +51,7 @@ solution/
 
 Only `solve.py` and `config.jsonc` are written by hand. The rest is emitted by
 `fherma-lang` from the specification's signature and replaced at every
-measurement, so an answer cannot drift from the contract it claims to meet.
+measurement, so a solution cannot drift from the contract it claims to meet.
 
 ## The library, and why it is not here
 
@@ -76,7 +76,7 @@ On an NVIDIA card the package is `desilofhe-cu130` and the image is
 | `scheme` | `gl` | the matrix scheme, not RNS-CKKS |
 | `mode` | `cpu` | `gpu` with the CUDA image |
 | `thread_count` | `1` | so a number means one core; `0` takes the machine |
-| `keys` | `["matrix_multiplication"]` | the only key this answer uses; every other costs generation time and memory |
+| `keys` | `["matrix_multiplication"]` | the only key this solution uses; every other costs generation time and memory |
 | `shape` | `null` | taken from the point, so the matrix size is stated in one place |
 
 ## Running it yourself
@@ -87,7 +87,7 @@ python solution/main.py <point directory>
 ```
 
 A point directory is what the specification's testing bundle writes with
-`main.py make`. The answer is judged by the same bundle with
+`main.py make`. The result is judged by the same bundle with
 `main.py verify` — element-wise, to an absolute tolerance of 1e-2 against the
 cleartext product.
 
